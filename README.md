@@ -1,81 +1,85 @@
-# <h1>Active Directory Home Lab</h1>
+# <h1>Azure Sentinel (SIEM)</h1>
 
 
 <h2>Description</h2>
-This repository contains steps on how I set up a basic home lab running the Active Directory 
+In this blog, I setup Azure Sentinel (SIEM) and connect it to a live virtual machine acting as a honey pot. I observed live attacks (RDP Brute Force) from all around the world. I used a custom PowerShell script to look up the attackers Geolocation information and plot it on the Azure Sentinel Map. 
 <br />
 
 
 <h2>Languages and Utilities Used</h2>
 
-- <b>PowerShell</b> 
-- <b>Oracle VirtualBox</b>
+- <b>PowerShell Script</b> 
+- <b>Azure Sentinel</b>
+- <b>Kusto Query Language (KQL - Used to build world map)</b>
+- <b>3rd Party API: ipgeolocation.io</b>
 
-<h2>Environments Used </h2>
 
-- <b>Windows 10 ISO</b> 
-- <b>Windows Server 2019 ISO</b>
-
-<h2>Lab walk-through:</h2>
+<h2>Project walk-through:</h2>
 
 <p align="Center">
-Diagram of the Lab: <br/>
-<img src="https://i.imgur.com/RLMHsXF.png" height="60%" width="50%" alt="Disk Sanitization Steps"/>
+Diagram of the project: <br/>
+<img src="https://i.imgur.com/e63D0r4.png" height="60%" width="50%" alt="Disk Sanitization Steps"/>
 <br />
 <br />
-Create a new virtual machine by clicking on "New" in VirtualBox, naming it "Domain Controller," and selecting the "Windows Server 2019" ISO file as the boot media. <br/>
-<img src="https://i.imgur.com/EtUFiSS.png" height="60%" width="50%" alt="Disk Sanitization Steps"/>
+ Create a Honeypot Virtual Machine<br/>
+<img src="https://i.imgur.com/fI00p8J.png" height="60%" width="50%" alt="Disk Sanitization Steps"/>
 <br />
-<br />
-Configure the virtual machine by giving it two network adapters: one for connecting to the internet and the other for the private network. <br/>
-<img src="https://i.imgur.com/gBlXDdI.png" height="60%" width="50%" alt="Disk Sanitization Steps"/>
+<img src="https://i.imgur.com/4Lw0EHJ.png" height="60%" width="50%" alt="Disk Sanitization Steps"/>
 <br />
   <br/>
-<img src="https://i.imgur.com/2C4fjAd.png" height="60%" width="50%" alt="Disk Sanitization Steps"/>
+<img src="https://i.imgur.com/qij8Pux.png" height="60%" width="50%" alt="Disk Sanitization Steps"/>
 <br />
 <br />
-Install Server 2019 on the virtual machine and assign an IP address for the internal network. <br/>
-<img src="https://i.imgur.com/ke3NC8M.png" height="60%" width="50%" alt="Disk Sanitization Steps"/>
+ Create a Log Analytics Workspace <br/>
+<img src="https://i.imgur.com/cedltBx.png" height="60%" width="50%" alt="Disk Sanitization Steps"/>
 <br />
-  <br/>
-<img src="https://i.imgur.com/jkURjaK.png" height="60%" width="50%" alt="Disk Sanitization Steps"/>
+  <br />
+ Configure Microsoft Defender for Cloud <br/>
+<img src="https://i.imgur.com/M2boD0x.png" height="60%" width="50%" alt="Disk Sanitization Steps"/>
 <br />
 <br />
 Name the server and install Active Directory to create the domain. <br/>
-<img src="https://i.imgur.com/9X17sgJ.png" height="60%" width="50%" alt="Disk Sanitization Steps"/>
-<br />
-  <br/>
-<img src="https://i.imgur.com/MJjoBaj.png" height="60%" width="50%" alt="Disk Sanitization Steps"/>
-<br />
-<br />
-Configure routing so that clients on the private network can access the internet through the domain controller. <br/>
-<img src="https://i.imgur.com/0dXq6q4.png" height="60%" width="50%" alt="Disk Sanitization Steps"/>
-<br />
-  <br/>
-<img src="https://i.imgur.com/bo7wEed.png" height="60%" width="50%" alt="Disk Sanitization Steps"/>
-<br />
-  <br/>
-<img src="https://i.imgur.com/4ZmjdlT.png" height="60%" width="50%" alt="Disk Sanitization Steps"/>
+<img src="https://i.imgur.com/JmpKPvt.png" height="60%" width="50%" alt="Disk Sanitization Steps"/>
 <br />
   <br />
-Set up DHCP on the domain controller.<br/>
-<img src="https://i.imgur.com/DEjwNO7.png" height="60%" width="50%" alt="Disk Sanitization Steps"/>
+ Connect Log Analytics Workspace to Virtual Machine <br/>
+<img src="https://i.imgur.com/zt2JBUZ.png" height="60%" width="50%" alt="Disk Sanitization Steps"/>
 <br />
+<br />
+Configure Microsoft Sentinel <br/>
+<img src="https://i.imgur.com/MNquzye.png" height="60%" width="50%" alt="Disk Sanitization Steps"/>
+<br />
+  <br />
+ Disable the Firewall in Virtual Machine <br/>
+<img src="https://i.imgur.com/CXygZCO.png" height="60%" width="50%" alt="Disk Sanitization Steps"/>
+<br />
+  <br />
+ Scripting the Security Log Exporter <br/>
+<img src="https://i.imgur.com/KZtCfSz.png" height="60%" width="50%" alt="Disk Sanitization Steps"/>
+<br />
+  <br />
+Set up your account on ipgeolocation.io.<br/>
+<img src="https://i.imgur.com/BHxlscn.png" height="60%" width="50%" alt="Disk Sanitization Steps"/>
+<br />
+  <br />
+  Create Custom Log in Log Analytics Workspace
   <br/>
-<img src="https://i.imgur.com/5J8RZQD.png" height="60%" width="50%" alt="Disk Sanitization Steps"/>
+<img src="https://i.imgur.com/C86AYAj.png" height="60%" width="50%" alt="Disk Sanitization Steps"/>
 <br />
     <br />
-Run the PowerShell script to create 1000 users in Active Directory. Then, create a new virtual machine named "Client1" and install Windows 10 on it. After creating the new VM, connect the client machine to the private network and join it to the domain.<br/>
-<img src="https://i.imgur.com/csnehjs.png" height="60%" width="50%" alt="Disk Sanitization Steps"/>
+Query the Custom Log.<br/>
+<img src="https://i.imgur.com/5OwEfar.png" height="60%" width="50%" alt="Disk Sanitization Steps"/>
 <br />
-  <br/>
-<img src="https://i.imgur.com/DSSfFdK.png" height="60%" width="50%" alt="Disk Sanitization Steps"/>
+  <br />
+ Extract Fields from Custom Log <br/>
+<img src="https://i.imgur.com/S5H04mn.png" height="60%" width="50%" alt="Disk Sanitization Steps"/>
 <br />
-  <br/>
-<img src="https://i.imgur.com/qaFyOQ4.png" height="60%" width="50%" alt="Disk Sanitization Steps"/>
+  <br />
+ Map Data in Microsoft Sentinel <br/>
+<img src="https://i.imgur.com/5C1dSOh.png" height="60%" width="50%" alt="Disk Sanitization Steps"/>
 <br />
+<img src="https://i.imgur.com/HEok3af.png" height="60%" width="50%" alt="Disk Sanitization Steps"/>
 <br />
-Log into the client machine with a domain account. <br/>
-<img src="https://i.imgur.com/Q6hJDgM.png" height="60%" width="50%" alt="Disk Sanitization Steps"/>
+<img src="https://i.imgur.com/EL2EYlL.png" height="60%" width="50%" alt="Disk Sanitization Steps"/>
 </p>
 
